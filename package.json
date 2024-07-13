@@ -1,0 +1,17 @@
+{
+  "name": "site-map-generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "npm": "^10.8.2",
+    "sitemap-generator": "^8.5.1"
+  }
+}
