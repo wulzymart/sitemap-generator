@@ -7,7 +7,7 @@ app.get("/", (req, res) => {
   if (!url) {
     return res.status(400).send("url is required");
   }
-  const path = new URL(url).host;
+  const path = new URL(url).host.split(".")[0];
   const generator = SitemapGenerator(url, {
     maxDepth: 0,
     filepath: `${path}.sitemap.xml`,
@@ -16,13 +16,20 @@ app.get("/", (req, res) => {
   });
 
   generator.on("done", () => {
-    res.setHeader("Content-Type", "application/xml");
-    const sender = createReadStream(`${path}.sitemap.xml`);
-    sender.pipe(res);
-    sender.on("end", () => {
-      res.end();
-      unlinkSync(`${path}.sitemap.xml`);
-    });
+    try {
+      res.setHeader("Content-Type", "application/xml");
+      const sender = createReadStream(`${path}.sitemap.xml`);
+      sender.pipe(res);
+      sender.on("end", () => {
+        res.end();
+        unlinkSync(`${path}.sitemap.xml`);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  generator.on("error", (error) => {
+    console.log(error);
   });
 
   generator.start();
